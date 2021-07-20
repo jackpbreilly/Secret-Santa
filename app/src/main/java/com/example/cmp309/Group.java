@@ -1,25 +1,47 @@
 package com.example.cmp309;
+// data to create a new group
+class Group{
+    private String Name, Time, Date, Theme, Limit, creator;
+    private String  Lat;
+    private String  Lon;
 
-public class Group {
-    private String Name, LastName;
-
-    public Group(){
-
+    public Group(String Name_, String Time_, String Date_, String Theme_, String Limit_, String lat, String lon, String Creator){
+        Name = Name_; Time=Time_; Date = Date_; Theme = Theme_; Limit = Limit_;
+        Lat = lat;
+        Lon = lon;
+        creator = Creator;
     }
 
-    public String getLastName() {
-        return LastName;
+    public String getLat() {
+        return Lat;
+    }
+    public String getCreator() {
+        return creator;
     }
 
-    public void setLastName(String lastName) {
-        LastName = lastName;
+    public String getLon() {
+        return Lon;
     }
 
     public String getName() {
         return Name;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public String getTime() {
+        return Time;
     }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public String getTheme() {
+        return Theme;
+    }
+
+    public String getLimit() {
+        return Limit;
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.cmp309;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,10 +19,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistrationActivity extends AppCompatActivity {
-    private EditText emailTV, passwordTV;
+    private EditText emailTV, passwordTV, nameTV;
     private Button regBtn;
     private ProgressBar progressBar;
-
+private Context context = this;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +44,27 @@ public class RegistrationActivity extends AppCompatActivity {
     private void registerNewUser() {
         progressBar.setVisibility(View.VISIBLE);
 
-        String email, password;
+        final String email, password, name;
         email = emailTV.getText().toString();
         password = passwordTV.getText().toString();
+        name = nameTV.getText().toString();
 
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Please enter email...", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(email) || (email.length() < 5) || !email.contains("@")) {
+            progressBar.setVisibility(View.INVISIBLE);
+
+            Toast.makeText(getApplicationContext(), "Error: Invalid Email", Toast.LENGTH_LONG).show();
             return;
         }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Please enter password!", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(password) || password.length() < 5) {
+            progressBar.setVisibility(View.INVISIBLE);
+
+            Toast.makeText(getApplicationContext(), "Error: Invalid Password", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(name) || password.length() < 1) {
+            progressBar.setVisibility(View.INVISIBLE);
+
+            Toast.makeText(getApplicationContext(), "Error: Invalid Password", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -64,7 +76,10 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
 
-                            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                            FirebaseAccess FB = new FirebaseAccess(context);
+                            FB.Setup(name);
+
+                            Intent intent = new Intent(RegistrationActivity.this, GroupDashboard.class);
                             startActivity(intent);
                         }
                         else {
@@ -77,6 +92,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void initializeUI() {
         emailTV = findViewById(R.id.email);
+        nameTV = findViewById(R.id.name);
         passwordTV = findViewById(R.id.password);
         regBtn = findViewById(R.id.register);
         progressBar = findViewById(R.id.progressBar);
